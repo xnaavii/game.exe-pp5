@@ -1,11 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Game.exe</title>
-</head>
-<body>
-    <h1>Hello World!</h1>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Welcome to Game.exe{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1>Welcome to Game.exe</h1>
+    <p class="lead">Discover and enjoy the best games across all platforms.</p>
+    <div class="mt-4">
+        <a href="#" class="btn btn-primary btn-lg">Explore Games</a>
+        <a href="#" class="btn btn-secondary btn-lg">Log In</a>
+    </div>
+</div>
+{% endblock %}
