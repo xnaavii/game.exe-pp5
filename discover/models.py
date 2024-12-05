@@ -8,6 +8,7 @@ class Game(models.Model):
     genre = models.CharField(max_length=100)
     platform = models.CharField(max_length=100)
     release_date = models.DateField()
+    thumbnail_url = models.URLField(blank=True, null=True)
     rating = models.FloatField(default=0.0)
 
     def __str__(self):
