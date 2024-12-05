@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Discover Games{% endblock %}
 
@@ -6,5 +7,29 @@
 <div class="container mt-5">
     <h1>Discover</h1>
     <p class="lead">Browse our collection of amazing games!</p>
+
+    <div class="row">
+        {% for game in games %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if game.thumbnail_url %}
+                    <img src="{{ game.thumbnail_url }}" class="card-img-top" alt="{{ game.title }}">
+                {% else %}
+                    <!-- Fallback image if no thumbnail is provided -->
+                    <img src="{% static 'main/default_thumbnail.jpg' %}" class="card-img-top" alt="No thumbnail">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ game.title }}</h5>
+                    <p class="card-text">
+                        <strong>Price:</strong> ${{ game.price }}<br>
+                        <strong>Rating:</strong> {{ game.rating }} / 5
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No games available at the moment. Please check back later!</p>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
