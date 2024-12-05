@@ -1,0 +1,33 @@
+/* styles.css */
+
+/* 
+ * This creates a smooth, animated gradient background. 
+ * The animation cycles through multiple background gradients over time.
+ */
+body {
+    background: linear-gradient(-45deg, #1e3c72, #2a5298, #66a6ff, #89f7fe);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    margin: 0; /* Ensure no default margin interferes with full-screen background */
+    min-height: 100vh; /* Make sure background covers full viewport height */
+}
+
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Optional: Add some contrast so containers with text are readable */
+.content-container {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 50px;
+}
