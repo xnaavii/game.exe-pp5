@@ -22,6 +22,7 @@ from main.views import custom_404
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
+    path('discover/', include('discover.urls')),
 ]
 
 handler404 = custom_404
