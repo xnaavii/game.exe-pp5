@@ -5,11 +5,23 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h1>Discover</h1>
+    <h1 class="mb-4">Discover</h1>
     <p class="lead">Browse our collection of amazing games!</p>
 
-    <!-- Filter Form -->
+    <!-- Search Bar -->
     <form method="get" class="mb-4">
+        <div class="row g-3">
+            <div class="col-md-9">
+                <label for="search" class="form-label">Search</label>
+                <input type="text" name="search" id="search" class="form-control" placeholder="Search by title..." value="{{ request.GET.search }}">
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary me-2">Apply</button>
+                <a href="{% url 'discover' %}" class="btn btn-secondary">Clear</a>
+            </div>
+        </div>
+
+        <!-- Filters -->
         <div class="row g-3">
             <!-- Genre Filter -->
             <div class="col-md-3">
@@ -17,7 +29,7 @@
                 <select name="genre" id="genre" class="form-select">
                     <option value="">All</option>
                     {% for g in genres %}
-                        <option value="{{ g }}" {% if request.GET.genre == g %}selected{% endif %}>{{ g }}</option>
+                    <option value="{{ g }}" {% if request.GET.genre == g %}selected{% endif %}>{{ g }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -43,28 +55,19 @@
                 <input type="date" name="date_to" id="date_to" class="form-control" value="{{ request.GET.date_to }}">
             </div>
         </div>
-        
-        <div class="mt-3">
-            <button type="submit" class="btn btn-primary">Apply Filters</button>
-            <a href="{% url 'discover' %}" class="btn btn-secondary">Clear Filters</a>
-        </div>
     </form>
 
+    <!-- Game List -->
     <div class="row">
         {% for game in games %}
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                {% if game.thumbnail_url %}
-                    <img src="{{ game.thumbnail_url }}" class="card-img-top" alt="{{ game.title }}">
-                {% else %}
-                    <img src="{% static 'main/default_thumbnail.jpg' %}" class="card-img-top" alt="No thumbnail">
-                {% endif %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100 text-center">
                 <div class="card-body">
                     <h5 class="card-title">{{ game.title }}</h5>
                     <p class="card-text">
                         <strong>Price:</strong> ${{ game.price }}<br>
                         <strong>Genre:</strong> {{ game.genre }}<br>
-                        <strong>Platform(s):</strong>
+                        <strong>Platform(s):</strong> 
                         {% for plt in game.platforms.all %}
                             {{ plt.name }}{% if not forloop.last %}, {% endif %}
                         {% endfor %}
@@ -76,7 +79,7 @@
             </div>
         </div>
         {% empty %}
-        <p>No games available for the selected filters. Please adjust your criteria.</p>
+        <p>No games found. Try adjusting your filters or search query.</p>
         {% endfor %}
     </div>
 </div>

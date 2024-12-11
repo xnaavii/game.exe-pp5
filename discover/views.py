@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Game, Platform
 
+
 def discover(request):
     """
     Render the Discover page, allowing visitors to browse available games.
@@ -17,6 +18,8 @@ def discover(request):
     selected_platform = request.GET.get('platform', '')
     date_from = request.GET.get('date_from', '')
     date_to = request.GET.get('date_to', '')
+    search_query = request.GET.get('search', '')
+
 
     # Apply filters
     if selected_genre:
@@ -27,6 +30,9 @@ def discover(request):
         games = games.filter(release_date__gte=date_from)
     if date_to:
         games = games.filter(release_date__lte=date_to)
+    # Apply Search Filter
+    if search_query:
+        games = games.filter(title__icontains=search_query)
 
     context = {
         'games': games,
