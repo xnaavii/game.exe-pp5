@@ -14,17 +14,17 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'landing_page' %}">Game.exe</a>
+            <a class="navbar-brand" href="{% url 'main:landing_page' %}">Game.exe</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'landing_page' %}">Home</a>
+                        <a class="nav-link" href="{% url 'main:landing_page' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'discover' %}">Discover</a>
+                        <a class="nav-link" href="{% url 'discover:discover' %}">Discover</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Log In</a>
@@ -33,6 +33,16 @@
             </div>
         </div>
     </nav>
+
+    {% if messages %}
+        <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        </div>
+    {% endif %}
 
     <main class="container mt-4">
         {% block content %}

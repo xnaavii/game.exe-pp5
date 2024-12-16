@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Your Backpack{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Your Backpack</h1>
+    <p class="lead">These are the games you've added:</p>
+
+    <div class="row">
+        {% for game in games %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 text-center">
+                <div class="card-body">
+                    <h5 class="card-title">{{ game.title }}</h5>
+                    <p>
+                        <strong>Price:</strong> ${{ game.price }}<br>
+                        <strong>Genre:</strong> {{ game.genre }}<br>
+                        <strong>Platform(s):</strong>
+                        {% for plt in game.platforms.all %}
+                            {{ plt.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                        <br>
+                        <strong>Release Date:</strong> {{ game.release_date }}<br>
+                        <strong>Rating:</strong> {{ game.rating }} / 5
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No games in your backpack yet. Go back to <a href="{% url 'discover:discover' %}">Discover</a> to add some!</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
