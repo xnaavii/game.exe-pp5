@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Game, Platform
 
 
@@ -41,3 +41,8 @@ def discover(request):
         'request': request,  # Pass request to template for easy GET retrieval
     }
     return render(request, 'discover/discover.html', context)
+
+
+def game_detail(request, game_id):
+    game = get_object_or_404(Game, id=game_id)
+    return render(request, 'discover/game_detail.html', {'game': game})
