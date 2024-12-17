@@ -8,9 +8,10 @@
     <h1 class="mb-4">Discover</h1>
     <p class="lead">Browse our collection of amazing games!</p>
 
-    <!-- Search Bar -->
+    <!-- Filter & Search Form -->
     <form method="get" class="mb-4">
         <div class="row g-3">
+            <!-- Search Field -->
             <div class="col-md-9">
                 <label for="search" class="form-label">Search</label>
                 <input type="text" name="search" id="search" class="form-control" placeholder="Search by title..." value="{{ request.GET.search }}">
@@ -21,8 +22,7 @@
             </div>
         </div>
 
-        <!-- Filters -->
-        <div class="row g-3">
+        <div class="row g-3 mt-3">
             <!-- Genre Filter -->
             <div class="col-md-3">
                 <label for="genre" class="form-label">Genre</label>
@@ -45,7 +45,7 @@
                 </select>
             </div>
 
-            <!-- Release Date Range -->
+            <!-- Release Date Filters -->
             <div class="col-md-3">
                 <label for="date_from" class="form-label">Release Date From</label>
                 <input type="date" name="date_from" id="date_from" class="form-control" value="{{ request.GET.date_from }}">
@@ -57,32 +57,52 @@
         </div>
     </form>
 
-    <!-- Game List -->
+    <!-- Game Cards -->
     <div class="row">
         {% for game in games %}
         <div class="col-md-6 col-lg-4 mb-4">
             <div class="card h-100">
+
+                {% if game.thumbnail_url %}
+                    <img src="{{ game.thumbnail_url }}" class="card-img-top img-fluid thumbnail-fixed-size" alt="{{ game.title }}">
+                {% else %}
+                    <img src="{% static 'main/default_thumbnail.jpg' %}" class="card-img-top img-fluid thumbnail-fixed-size" alt="No thumbnail">
+                {% endif %}
+
                 <div class="card-body">
-                    <h5 class="card-title">
-                        <a href="{% url 'discover:game_detail' game.id %}">{{ game.title }}</a>
-                    </h5>
-                    <p class="card-text">
-                        <strong>Price:</strong> ${{ game.price }}<br>
-                        <strong>Genre:</strong> {{ game.genre }}<br>
-                        <strong>Platform(s):</strong> 
+                    <h5 class="card-title">{{ game.title }}</h5>
+                    <p class="card-text mb-2">
+                        <i class="bi bi-currency-dollar"></i> <strong>Price:</strong> ${{ game.price }}
+                    </p>
+                    <p class="card-text mb-2">
+                        <i class="bi bi-controller"></i> <strong>Genre:</strong> {{ game.genre }}
+                    </p>
+                    <p class="card-text mb-2">
+                        <i class="bi bi-laptop"></i> <strong>Platform(s):</strong>
                         {% for plt in game.platforms.all %}
                             {{ plt.name }}{% if not forloop.last %}, {% endif %}
                         {% endfor %}
-                        <br>
-                        <strong>Release Date:</strong> {{ game.release_date }}<br>
-                        <strong>Rating:</strong> {{ game.rating }} / 5
                     </p>
+                    <p class="card-text mb-2">
+                        <i class="bi bi-calendar-event"></i> <strong>Release Date:</strong> {{ game.release_date }}
+                    </p>
+                    <p class="card-text mb-3">
+                        <i class="bi bi-star-fill text-warning"></i> <strong>Rating:</strong> {{ game.rating }} / 5
+                    </p>
+
+                    <!-- Add to Backpack -->
+                    <form action="{% url 'backpack:add_to_backpack' game.id %}" method="post" class="mb-3">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-bag-plus"></i> Add to Backpack
+                        </button>
+                    </form>
+
+                    <!-- View Details -->
+                    <a href="{% url 'discover:game_detail' game.id %}" class="btn btn-info">
+                        <i class="bi bi-info-circle"></i> View Details
+                    </a>
                 </div>
-                <!-- Add to Backpack Button -->
-                <form action="{% url 'backpack:add_to_backpack' game.id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-success">Add to Backpack</button>
-                </form>
             </div>
         </div>
         {% empty %}
