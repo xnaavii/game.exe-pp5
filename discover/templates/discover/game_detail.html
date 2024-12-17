@@ -52,6 +52,13 @@
                 <strong>Rating:</strong> {{ game.rating }} / 5
             </p>
 
+            <!-- Game Description -->
+            {% if game.description %}
+                <p class="mb-4">
+                <strong>Description:</strong><br>
+            {{ game.description }}
+                </p>
+            {% endif %}
 
             <!-- Add to Backpack button -->
             <form action="{% url 'backpack:add_to_backpack' game.id %}" method="post" class="mb-3">

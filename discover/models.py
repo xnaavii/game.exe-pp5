@@ -16,6 +16,7 @@ class Game(models.Model):
     thumbnail_url = models.URLField(blank=True, null=True)
     rating = models.FloatField(default=0.0)
     platforms = models.ManyToManyField(Platform, blank=True)
+    description = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.title
