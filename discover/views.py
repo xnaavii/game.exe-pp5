@@ -1,6 +1,12 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Game, Platform
+from django.contrib import messages
 
+CONSOLE_LINKS = {
+    'PS5': 'https://www.playstation.com',
+    'Xbox': 'https://www.xbox.com',
+    'Switch': 'https://www.nintendo.com',
+}
 
 def discover(request):
     """
@@ -44,5 +50,42 @@ def discover(request):
 
 
 def game_detail(request, game_id):
+    """
+    Display detailed information about a specific game, including title, price, genre,
+    platforms, release date, rating, description, and a form to purchase based on platform.
+    """
     game = get_object_or_404(Game, id=game_id)
-    return render(request, 'discover/game_detail.html', {'game': game})
+    platforms = game.platforms.all()  # Retrieve all associated platforms
+
+    return render(request, 'discover/game_detail.html', {
+        'game': game,
+        'platforms': platforms,
+    })
+
+def purchase_game(request, game_id):
+    """
+    Handle the purchase form from the game detail page.
+    If PC is selected, add the game to the backpack.
+    Otherwise, redirect to the external platform site if available.
+    """
+    game = get_object_or_404(Game, id=game_id)
+    selected_platform = request.POST.get('platform_choice', '')
+
+    if selected_platform == 'PC':
+        # Add to backpack (session-based)
+        if 'backpack' not in request.session:
+            request.session['backpack'] = []
+        if game_id not in request.session['backpack']:
+            request.session['backpack'].append(game_id)
+            request.session.modified = True
+            messages.success(request, f"{game.title} (PC) has been added to your backpack.")
+        else:
+            messages.warning(request, f"{game.title} (PC) is already in your backpack.")
+        return redirect('discover:game_detail', game_id=game_id)
+    else:
+        # Check if console platform is known
+        if selected_platform in CONSOLE_LINKS:
+            return redirect(CONSOLE_LINKS[selected_platform])
+        else:
+            messages.error(request, "Unknown platform selected or platform not supported.")
+            return redirect('discover:game_detail', game_id=game_id)
