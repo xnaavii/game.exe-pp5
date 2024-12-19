@@ -1,21 +1,20 @@
-from django.shortcuts import redirect, get_object_or_404, render
+from django.shortcuts import redirect, render
 from django.contrib import messages
 from discover.models import Game
 
-def add_to_backpack(request, game_id):
-    game = get_object_or_404(Game, id=game_id)
-
+def remove_from_backpack(request, game_id):
+    # Ensure there's a backpack list in session
     if 'backpack' not in request.session:
         request.session['backpack'] = []
 
-    if game_id not in request.session['backpack']:
-        request.session['backpack'].append(game_id)
+    if game_id in request.session['backpack']:
+        request.session['backpack'].remove(game_id)
         request.session.modified = True
-        messages.success(request, f"'{game.title}' added to your backpack.")
+        messages.success(request, "Game removed from your backpack.")
     else:
-        messages.warning(request, f"'{game.title}' is already in your backpack.")
-
-    return redirect('discover:discover')
+        messages.warning(request, "Game was not found in your backpack.")
+    
+    return redirect('backpack:view_backpack')
 
 def view_backpack(request):
     game_ids = request.session.get('backpack', [])

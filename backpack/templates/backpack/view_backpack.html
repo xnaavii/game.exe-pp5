@@ -23,6 +23,14 @@
                         <strong>Release Date:</strong> {{ game.release_date }}<br>
                         <strong>Rating:</strong> {{ game.rating }} / 5
                     </p>
+                
+                    <!-- Remove from Backpack -->
+                    <form action="{% url 'backpack:remove_from_backpack' game.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Remove
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
