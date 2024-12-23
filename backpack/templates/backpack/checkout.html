@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Checkout</h1>
+    <p class="lead">Review your items and complete your purchase.</p>
+
+    {% if games %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Game</th>
+                <th scope="col">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for game in games %}
+            <tr>
+                <td>
+                    {{ game.title }}
+                </td>
+                <td>
+                    ${{ game.price }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="mb-3">
+        <strong>Total:</strong> ${{ total_price }}
+    </div>
+
+    <form action="{% url 'backpack:complete_purchase' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-credit-card"></i> Complete Purchase
+        </button>
+    </form>
+    {% else %}
+    <p>Your backpack is empty. <a href="{% url 'discover:discover' %}">Discover</a> more games!</p>
+    {% endif %}
+</div>
+{% endblock %}

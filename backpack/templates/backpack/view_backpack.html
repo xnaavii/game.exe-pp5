@@ -38,5 +38,12 @@
         <p>No games in your backpack yet. Go back to <a href="{% url 'discover:discover' %}">Discover</a> to add some!</p>
         {% endfor %}
     </div>
+    {% if games %}
+    <div class="mt-3">
+        <a href="{% url 'backpack:checkout' %}" class="btn btn-primary">
+            <i class="bi bi-credit-card"></i> Proceed to Checkout
+        </a>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
