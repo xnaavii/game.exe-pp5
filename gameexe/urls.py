@@ -20,11 +20,10 @@ from django.conf.urls import handler404
 from main.views import custom_404
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("", include("main.urls", namespace="main")),
-    path("discover/", include("discover.urls", namespace="discover")),
-    path("backpack/", include("backpack.urls", namespace="backpack")),
-    path("accounts/", include("allauth.urls")),
+    path('admin/', admin.site.urls),
+    path('', include('main.urls', namespace='main')),
+    path('discover/', include('discover.urls', namespace='discover')),
+    path('backpack/', include('backpack.urls', namespace='backpack')),
 ]
 
 handler404 = custom_404

@@ -41,38 +41,17 @@ INSTALLED_APPS = [
     'main',
     'discover',
     'backpack',
-    'django.contrib.sites',  # Required for Django Allauth
-    'allauth',
-    'allauth.account',
 ]
 
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "allauth.account.middleware.AccountMiddleware",
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-# All-auth config
-SITE_ID = 1
-# Redirect URLs
-LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/"
-
-# Email and username settings
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = (
-    "optional"  # Set to 'mandatory' if you want email verification
-)
-ACCOUNT_AUTHENTICATION_METHOD = "username_email"  # Allow login with username or email
-ACCOUNT_USERNAME_REQUIRED = True
-
-# Signup/Signin redirects
-ACCOUNT_SIGNUP_REDIRECT_URL = "/"
 
 ROOT_URLCONF = 'gameexe.urls'
 
@@ -91,14 +70,6 @@ TEMPLATES = [
             ],
         },
     },
-]
-
-AUTHENTICATION_BACKENDS = [
-    # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
-
-    # `allauth` specific authentication methods, such as login by email
-    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 WSGI_APPLICATION = 'gameexe.wsgi.application'

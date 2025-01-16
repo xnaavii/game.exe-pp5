@@ -33,21 +33,12 @@
                 </a>
             </li>
             
-            <!-- Logout (if logged in) -->
-            {% if user.is_authenticated %}
-                <li class="nav-item">
-                <a class="nav-link" href="{% url 'account_logout' %}">
-                <i class="bi bi-box-arrow-right"></i> Logout
-                </a>
-                </li>
-            {%else %}
             <!-- Login Link -->
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'account_login' %}">
+                <a class="nav-link" href="#">
                 <i class="bi bi-box-arrow-in-right"></i> Log In
                 </a>
             </li>
-            {% endif %}
     
             <!-- Backpack Link with Count -->
             <li class="nav-item">
