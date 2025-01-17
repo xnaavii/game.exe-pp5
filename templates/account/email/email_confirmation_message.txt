@@ -1,0 +1,10 @@
+Hi {{ user.username }},
+
+Thanks for signing up for gameexe! Please click the link below to confirm your email address and complete your registration:
+
+{{ activate_url }}
+
+If you did not sign up for this account, you can safely ignore this email.
+
+Best regards,
+The gameexe Team

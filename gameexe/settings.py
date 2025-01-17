@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
-
+from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-sltsykjw#7wj7=d3l_i2z(h1we6i(fhkxadbwy6d(tu#tw(_r0'
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
@@ -66,13 +66,25 @@ LOGOUT_REDIRECT_URL = "/"
 # Email and username settings
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = (
-    "optional"  # Set to 'mandatory' if you want email verification
+    "mandatory"  # Set to 'mandatory' if you want email verification
 )
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"  # Allow login with username or email
 ACCOUNT_USERNAME_REQUIRED = True
 
 # Signup/Signin redirects
 ACCOUNT_SIGNUP_REDIRECT_URL = "/"
+
+# Email Configuration
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_PORT = config("EMAIL_PORT", cast=int)
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+
+# Stripe Keys
+# STRIPE_PUBLIC_KEY = config("STRIPE_PUBLIC_KEY")
+# STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
+
 
 ROOT_URLCONF = 'gameexe.urls'
 
