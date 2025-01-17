@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Logout{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Logout</h1>
+    <p>Are you sure you want to log out?</p>
+
+    <form method="post" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">
+            <i class="bi bi-box-arrow-right"></i> Confirm Logout
+        </button>
+        <a href="{% url 'main:landing_page' %}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left-circle"></i> Cancel
+        </a>
+    </form>
+</div>
+{% endblock %}
