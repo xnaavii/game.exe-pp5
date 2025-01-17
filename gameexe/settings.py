@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
@@ -66,10 +66,11 @@ LOGOUT_REDIRECT_URL = "/"
 # Email and username settings
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = (
-    "mandatory"  # Set to 'mandatory' if you want email verification
+    "mandatory"  # Set to 'mandatory' if you want email verification, optional if not
 )
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"  # Allow login with username or email
 ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 
 # Signup/Signin redirects
 ACCOUNT_SIGNUP_REDIRECT_URL = "/"
