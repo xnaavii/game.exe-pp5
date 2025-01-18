@@ -17,8 +17,8 @@
                 <input type="text" name="search" id="search" class="form-control" placeholder="Search by title..." value="{{ request.GET.search }}">
             </div>
             <div class="col-md-3 d-flex align-items-end">
-                <button type="submit" class="btn btn-primary me-2">Apply</button>
-                <a href="{% url 'discover:discover' %}" class="btn btn-secondary">Clear</a>
+                <button type="submit" class="btn btn-dark me-2">Apply</button>
+                <a href="{% url 'discover:discover' %}" class="btn btn-danger">Clear</a>
             </div>
         </div>
 
@@ -56,48 +56,48 @@
             </div>
         </div>
     </form>
-
-    <!-- Game Cards -->
-    <div class="row">
+    <!-- Game List -->
+    <div class="game-list">
         {% for game in games %}
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="card h-100">
-
+        <div class="row align-items-center rounded p-3 mb-3 game-item">
+            <div class="col-2 px-1">
                 {% if game.thumbnail_url %}
-                    <img src="{{ game.thumbnail_url }}" class="card-img-top img-fluid thumbnail-fixed-size" alt="{{ game.title }}">
+                    <img src="{{ game.thumbnail_url }}" class="thumbnail-fixed-size rounded" alt="{{ game.title }}">
                 {% else %}
                     <img src="{% static 'main/default_thumbnail.jpg' %}" class="card-img-top img-fluid thumbnail-fixed-size" alt="No thumbnail">
                 {% endif %}
+            </div>
+            <div class="col-8 px-5 py-2">
+                <h5>{{ game.title }}</h5>
+                <p class="mb-2">
+                    <i class="bi bi-tag"></i> ${{ game.price }}
+                </p>
+                <p class="mb-2">
+                    <i class="bi bi-controller"></i> {{ game.genre }}
+                </p>
 
-                <div class="card-body">
-                    <h5 class="card-title">{{ game.title }}</h5>
-                    <p class="card-text mb-2">
-                        <i class="bi bi-tag"></i> <strong>Price:</strong> ${{ game.price }}
-                    </p>
-                    <p class="card-text mb-2">
-                        <i class="bi bi-controller"></i> <strong>Genre:</strong> {{ game.genre }}
-                    </p>
-                    <p class="card-text mb-2">
-                        <i class="bi bi-laptop"></i> <strong>Platform(s):</strong>
-                        {% for plt in game.platforms.all %}
-                            {{ plt.name }}{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                    </p>
-                    <p class="card-text mb-2">
-                        <i class="bi bi-calendar-event"></i> <strong>Release Date:</strong> {{ game.release_date }}
-                    </p>
+                <!-- Platform -->
+                <p>
+                    <i class="bi bi-laptop"></i>
+                    {% for plt in game.platforms.all %}
+                        <span>{{ plt.name }}</span>
+                        {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
 
-
-                    <!-- View Details -->
-                    <a href="{% url 'discover:game_detail' game.id %}" class="btn btn-info">
-                        <i class="bi bi-info-circle"></i> View Details
-                    </a>
-                </div>
+                <p class="mb-2">
+                    <i class="bi bi-calendar-event"></i> {{ game.release_date }}
+                </p>
+            </div>
+            <div class="col-2 text-center">
+                <!-- View Details Button -->
+                <a href="{% url 'discover:game_detail' game.id %}" class="btn btn-dark btn-sm">
+                    <i class="bi bi-info-circle"></i> View Details
+                </a>
             </div>
         </div>
         {% empty %}
         <p>No games found. Try adjusting your filters or search query.</p>
         {% endfor %}
     </div>
-</div>
 {% endblock %}
