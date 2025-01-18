@@ -8,96 +8,116 @@
     <h1 class="mb-4">Discover</h1>
     <p class="lead">Browse our collection of amazing games!</p>
 
-    <!-- Filter & Search Form -->
-    <form method="get" class="mb-4">
-        <div class="row g-3">
-            <!-- Search Field -->
-            <div class="col-md-9">
-                <label for="search" class="form-label">Search</label>
-                <input type="text" name="search" id="search" class="form-control" placeholder="Search by title..." value="{{ request.GET.search }}">
-            </div>
-            <div class="col-md-3 d-flex align-items-end">
-                <button type="submit" class="btn btn-dark me-2">Apply</button>
-                <a href="{% url 'discover:discover' %}" class="btn btn-danger">Clear</a>
-            </div>
-        </div>
-
-        <div class="row g-3 mt-3">
-            <!-- Genre Filter -->
-            <div class="col-md-3">
-                <label for="genre" class="form-label">Genre</label>
-                <select name="genre" id="genre" class="form-select">
-                    <option value="">All</option>
-                    {% for g in genres %}
-                    <option value="{{ g }}" {% if request.GET.genre == g %}selected{% endif %}>{{ g }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <!-- Platform Filter -->
-            <div class="col-md-3">
-                <label for="platform" class="form-label">Platform</label>
-                <select name="platform" id="platform" class="form-select">
-                    <option value="">All</option>
-                    {% for p in platforms %}
-                    <option value="{{ p }}" {% if request.GET.platform == p %}selected{% endif %}>{{ p }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <!-- Release Date Filters -->
-            <div class="col-md-3">
-                <label for="date_from" class="form-label">Release Date From</label>
-                <input type="date" name="date_from" id="date_from" class="form-control" value="{{ request.GET.date_from }}">
-            </div>
-            <div class="col-md-3">
-                <label for="date_to" class="form-label">Release Date To</label>
-                <input type="date" name="date_to" id="date_to" class="form-control" value="{{ request.GET.date_to }}">
-            </div>
-        </div>
-    </form>
-    <!-- Game List -->
+    <div class="row">
+        <div class="col-8">
+            <!-- Game List -->
     <div class="game-list">
-        {% for game in games %}
-        <div class="row align-items-center rounded p-3 mb-3 game-item">
-            <div class="col-2 px-1">
-                {% if game.thumbnail_url %}
-                    <img src="{{ game.thumbnail_url }}" class="thumbnail-fixed-size rounded" alt="{{ game.title }}">
-                {% else %}
-                    <img src="{% static 'main/default_thumbnail.jpg' %}" class="card-img-top img-fluid thumbnail-fixed-size" alt="No thumbnail">
-                {% endif %}
-            </div>
-            <div class="col-8 px-5 py-2">
-                <h5>{{ game.title }}</h5>
-                <p class="mb-2">
-                    <i class="bi bi-tag"></i> ${{ game.price }}
-                </p>
-                <p class="mb-2">
-                    <i class="bi bi-controller"></i> {{ game.genre }}
-                </p>
-
-                <!-- Platform -->
-                <p>
-                    <i class="bi bi-laptop"></i>
-                    {% for plt in game.platforms.all %}
-                        <span>{{ plt.name }}</span>
-                        {% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                </p>
-
-                <p class="mb-2">
-                    <i class="bi bi-calendar-event"></i> {{ game.release_date }}
-                </p>
-            </div>
-            <div class="col-2 text-center">
-                <!-- View Details Button -->
-                <a href="{% url 'discover:game_detail' game.id %}" class="btn btn-dark btn-sm">
-                    <i class="bi bi-info-circle"></i> View Details
+        <div class="row">
+            {% for game in games %}
+            <div class="col-md-6 mb-4">
+                <a href="{% url 'discover:game_detail' game.id %}" class="text-decoration-none text-dark">
+                    <div class="row g-1  rounded p-2 game-item h-100">
+                        <!-- Game Thumbnail -->
+                        <div class="col-3">
+                            {% if game.thumbnail_url %}
+                            <img src="{{ game.thumbnail_url }}" class="img-fluid rounded thumbnail-fixed-size" alt="{{ game.title }}">
+                            {% else %}
+                            <img src="{% static 'main/default_thumbnail.jpg' %}" class="img-fluid rounded"
+                                alt="No thumbnail">
+                            {% endif %}
+                        </div>
+    
+                        <!-- Game Details -->
+                        <div class="col-9">
+                            <h5 class="mb-2">{{ game.title }}</h5>
+                            <p class="mb-1">
+                                <i class="bi bi-tag"></i> ${{ game.price }}
+                            </p>
+                            <p class="mb-1">
+                                <i class="bi bi-controller"></i> {{ game.genre }}
+                            </p>
+                            <p class="mb-1">
+                                <i class="bi bi-laptop"></i>
+                                {% for plt in game.platforms.all %}
+                                <span>{{ plt.name }}</span>{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </p>
+                            <p class="mb-0 text-muted">
+                                <i class="bi bi-calendar-event"></i> {{ game.release_date }}
+                            </p>
+                        </div>
+                    </div>
                 </a>
             </div>
+            {% empty %}
+            <p class="text-center">No games found. Try adjusting your filters or search query.</p>
+            {% endfor %}
         </div>
-        {% empty %}
-        <p>No games found. Try adjusting your filters or search query.</p>
-        {% endfor %}
     </div>
+        </div>
+        <div class="col-4">
+        <!-- Search Bar -->
+        <form method="get" class="mb-4">
+            <div class="row g-3">
+                <!-- Search Field -->
+                <div class="col-md-9">
+                    <input type="text" name="search" id="search" class="form-control" placeholder="Search by title..." value="{{ request.GET.search }}">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-dark me-2">Apply</button>
+                    <a href="{% url 'discover:discover' %}" class="btn btn-danger">Clear</a>
+                </div>
+            </div>
+        </form>
+
+    <!-- Collapsible Filter Section -->
+    <div>
+        <button
+            class="btn btn-secondary mb-3"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#filterSection"
+            aria-expanded="false"
+            aria-controls="filterSection"
+        >
+            Toggle Filters
+        </button>
+        <div class="collapse" id="filterSection">
+            <form method="get">
+                <div class="row d-flex justify-items-center">
+                    <!-- Genre Filter -->
+                    <div class="col">
+                        <label for="genre" class="form-label">Genre</label>
+                        <select name="genre" id="genre" class="form-select">
+                            <option value="">All</option>
+                            {% for g in genres %}
+                            <option value="{{ g }}" {% if request.GET.genre == g %}selected{% endif %}>{{ g }}</option>
+                            {% endfor %}
+                        </select>
+
+                    <!-- Platform Filter -->
+                        <label for="platform" class="form-label">Platform</label>
+                        <select name="platform" id="platform" class="form-select">
+                            <option value="">All</option>
+                            {% for p in platforms %}
+                            <option value="{{ p }}" {% if request.GET.platform == p %}selected{% endif %}>{{ p }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Release Date Filters -->
+                    <div class="col">
+                        <label for="date_from" class="form-label">Release Date From</label>
+                        <input type="date" name="date_from" id="date_from" class="form-control" value="{{ request.GET.date_from }}">
+                        <label for="date_to" class="form-label">Release Date To</label>
+                        <input type="date" name="date_to" id="date_to" class="form-control" value="{{ request.GET.date_to }}">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+    </div>
+    
 {% endblock %}
